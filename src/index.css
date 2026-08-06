@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  --color-bg: #faf9f6;
+  --color-surface: #ffffff;
+  --color-border: #e6e4dd;
+  --color-text: #4a4941;
+  --color-heading: #201f1a;
+  --color-muted: #8a8878;
+  --color-accent: #6f7d5c;
+  --color-accent-soft: #eef1e8;
+  --color-glow: rgba(111, 125, 92, 0.14);
+
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Design system: minimal editorial + liquid glass — warm neutral base, muted sage accent */
+@layer base {
+  .dark {
+    --color-bg: #17170f;
+    --color-surface: rgba(38, 38, 30, 0.55);
+    --color-border: rgba(120, 120, 100, 0.22);
+    --color-text: #cfcec2;
+    --color-heading: #f5f4ee;
+    --color-muted: #94927f;
+    --color-accent: #a3b58c;
+    --color-accent-soft: rgba(163, 181, 140, 0.14);
+    --color-glow: rgba(163, 181, 140, 0.16);
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    color: var(--color-heading);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  h4 {
+    color: var(--color-heading);
+    font-weight: 600;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+  }
+}
+
+@layer utilities {
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-accent);
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 0 0.5rem 0;
+    font-weight: 600;
+  }
+
+  .skip-link:focus {
+    left: 0;
+  }
+
+  /* Plain surface for simple bordered blocks (form fields, tags) */
+  .card-surface {
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    border-radius: 1rem;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .card-surface-hover:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 12px 32px -16px var(--color-glow);
+  }
+
+  /* Liquid glass: frosted panel with soft refraction highlight, used for hero card + featured surfaces */
+  .glass-panel {
+    position: relative;
+    border-radius: 1.5rem;
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.12));
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+      0 24px 48px -24px rgba(30, 30, 20, 0.25);
+  }
+
+  .dark .glass-panel {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
+      0 24px 48px -24px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Scroll-reveal: fade + rise on entry, see useScrollReveal.ts */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
