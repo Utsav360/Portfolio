@@ -10,7 +10,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>
       <ThemeProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/Portfolio">
           <App />
         </BrowserRouter>
       </ThemeProvider>
